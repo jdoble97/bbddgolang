@@ -1,24 +1,15 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
+
+	"./crud"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
-func obtenerConexion() (db *sql.DB, er error) {
-	usuario := "root"
-	pass := ""
-	host := "tcp(127.0.0.1:3306)"
-	nombrebbdd := "ejemplo"
-	//usuario:contraseña@host/nombreBaseDeDatos
-	db, er = sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", usuario, pass, host, nombrebbdd))
-	if er != nil {
-		return nil, er
-	}
-	return db, nil
-}
 func main() {
-	db, err := obtenerConexion()
+	db, err := crud.ObtenerConexion()
 	if err != nil {
 		fmt.Println("Error en la base de datos:", err)
 	}
@@ -26,7 +17,13 @@ func main() {
 
 	err = db.Ping() //Comprobamos si hay conexión
 	if err != nil {
-
+		fmt.Println("Error conectando a la bbdd:", err)
+	}
+	fmt.Println("Conexión exitosa...")
+	contacto := crud.Contacto{
+		Nombre:    "Jorge",
+		Direccion: "Calle Jaccobinia",
+		Correo:    "jorgegonzalezw97@gmail.com",
 	}
 
 }
